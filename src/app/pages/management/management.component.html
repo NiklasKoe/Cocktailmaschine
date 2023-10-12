@@ -1,12 +1,27 @@
 <button class="btn btn-success btn-routing" [routerLink]="'/cocktails'">Zur Bestellseite</button>
 
+<!-- add Cocktail -->
+<button class="btn btn-info" (click)="displayAddCocktailForm = !displayAddCocktailForm">Cocktail hinzufügen</button>
+<form *ngIf="displayAddCocktailForm" style="width:80%; margin-left: 3rem">
+    <div class="mb-3">
+        <label for="cocktailName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="cocktailName"
+            [value]="cocktailToAdd.name">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Zutaten</label>
+        <ngx-bootstrap-multiselect [options]="myOptions" [(ngModel)]="optionsModel" (ngModelChange)="onChange()"></ngx-bootstrap-multiselect>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="addIngredient(ingredientToAdd)">Submit</button>
+</form>
+<!-- Cocktailtable -->
 <table class="table table-bordered table-striped">
     <colgroup>
         <col style="width: 30%">
         <col>
         <col style="width: 10%">
     </colgroup>
-    
+
     <thead>
         <tr>
             <th>Cocktailname</th>
@@ -15,25 +30,38 @@
         </tr>
     </thead>
     <tbody>
-        
+
         <tr *ngFor="let cocktail of cocktails">
             <td>{{cocktail.name}}</td>
             <td>
-                <tr *ngFor="let ingredient of cocktail.ingredients">
-                    <td>{{ingredient.name}}</td>
-                    <td>{{ingredient.amount}}</td>
-                </tr>
-            <td>
-                <button class="btn" (click)="deleteCocktail(cocktail)">
-                    <!-- <i class="fa-solid fa-trash-can"></i> -->
-                    WEG DAMIT
+        <tr *ngFor="let ingredient of cocktail.ingredients">
+            <td>{{ingredient.name}}</td>
+            <td>{{ingredient.amount}}</td>
+        </tr>
+        <td>
+            <button class="btn" (click)="deleteCocktail(cocktail)">
+                <!-- <i class="fa-solid fa-trash-can"></i> -->
+                WEG DAMIT
             </button>
         </td>
         </tr>
     </tbody>
 </table>
-
-
+<!-- Add Ingredient -->
+<button class="btn btn-info" (click)="displayAddIngredientForm = !displayAddIngredientForm">Cocktail hinzufügen</button>
+<form *ngIf="displayAddIngredientForm" style="width:80%; margin-left: 3rem">
+    <div class="mb-3">
+        <label for="ingredientName" class="form-label">Zutat</label>
+        <input type="text" class="form-control" id="ingredientName"
+            [value]="ingredientToAdd.name">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Pumpennummer</label>
+        <input type="number" class="form-control" id="exampleInputPassword1" [value]="ingredientToAdd.pump">
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="addIngredient(ingredientToAdd)">Submit</button>
+</form>
+<!-- Ingredienttable -->
 <table class="table">
     <colgroup>
         <col style="width: 30%">
@@ -49,16 +77,20 @@
         </tr>
     </thead>
     <tbody>
-        
+
         <tr *ngFor="let ingredient of ingredients">
             <td>{{ingredient.name}}</td>
-            <td>{{ingredient.fillLevel}}</td> 
+            <td>{{ingredient.fillLevel}}</td>
             <td>
                 <button class="btn" (click)="deleteIngredient(ingredient)">
                     <i class="fa-solid fa-trash-can"></i>
                     WEG DAMIT
-            </button>
-        </td>
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
+
+<ng-container>
+
+</ng-container>

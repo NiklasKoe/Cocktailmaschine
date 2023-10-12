@@ -13,6 +13,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgxBootstrapMultiselectModule } from 'ngx-bootstrap-multiselect';
 
 
 @NgModule({
@@ -20,16 +21,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AppComponent,
     ManagementComponent,
     CocktailsComponent,
-    ListToString
+    ListToString,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NgxBootstrapMultiselectModule,
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     FontAwesomeModule,
-    NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'})
+    NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
   ],
   providers: [
     ListToString
