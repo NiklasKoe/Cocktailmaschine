@@ -1,0 +1,64 @@
+<button class="btn btn-success btn-routing" [routerLink]="'/cocktails'">Zur Bestellseite</button>
+
+<table class="table table-bordered table-striped">
+    <colgroup>
+        <col style="width: 30%">
+        <col>
+        <col style="width: 10%">
+    </colgroup>
+    
+    <thead>
+        <tr>
+            <th>Cocktailname</th>
+            <th>Zutaten</th>
+            <th>Löschen</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr *ngFor="let cocktail of cocktails">
+            <td>{{cocktail.name}}</td>
+            <td>
+                <tr *ngFor="let ingredient of cocktail.ingredients">
+                    <td>{{ingredient.name}}</td>
+                    <td>{{ingredient.amount}}</td>
+                </tr>
+            <td>
+                <button class="btn" (click)="deleteCocktail(cocktail)">
+                    <!-- <i class="fa-solid fa-trash-can"></i> -->
+                    WEG DAMIT
+            </button>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table">
+    <colgroup>
+        <col style="width: 30%">
+        <col>
+        <col style="width: 10%">
+    </colgroup>
+    <!--  -->
+    <thead>
+        <tr>
+            <th>Zutat</th>
+            <th>Füllstand</th>
+            <th>Pumpe</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr *ngFor="let ingredient of ingredients">
+            <td>{{ingredient.name}}</td>
+            <td>{{ingredient.fillLevel}}</td> 
+            <td>
+                <button class="btn" (click)="deleteIngredient(ingredient)">
+                    <i class="fa-solid fa-trash-can"></i>
+                    WEG DAMIT
+            </button>
+        </td>
+        </tr>
+    </tbody>
+</table>

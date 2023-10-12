@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+.cocktail-card {
+    text-align: center;
+    min-height: 150px;
+    min-width: 150px;
+    margin-bottom: 24px;
+}
+
+.btn-cocktail {
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    margin: 75px;
+    padding: 10px;
+    min-height: 600px;
+}
+
+.clean-pumps {
+    text-align: end;
+}
+
+.btn-routing {
+    min-width: 180px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

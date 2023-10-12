@@ -1,0 +1,29 @@
+<button class="btn btn-success btn-routing" [routerLink]="'/management'">Zur Verwaltungsseite</button>
+
+<ngx-spinner 
+    size="small"
+    bdColor="rgba(0, 0, 0, 1)"
+    template="<img src='https://img.thedailybeast.com/image/upload/c_crop,d_placeholder_euli9k,h_1440,w_2560,x_0,y_0/dpr_1.5/c_limit,w_1044/fl_lossy,q_auto/v1499917031/170707-Wondrich-questions-tease_qpo692' />"
+></ngx-spinner>
+<!-- 
+    template="<img src='https://media.giphy.com/media/3zfox4LvqnIas/giphy.gif' />" -->
+
+<div class="title text-center">
+    <h1>Cocktailmaschine</h1>
+</div>
+<div class="card">
+    <div class="row">
+        <div class="col-10">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-12 cocktail-card" *ngFor="let cocktail of cocktails">
+                    <button (click)="makeCocktail(cocktail)" class="btn btn-info btn-cocktail">{{cocktail.name}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-m-1 clean-pumps">
+                <button (click)="cleanPumps()" class="btn btn-warning">Pumpen reinigen</button>
+        </div>
+    </div>
+</div>
+
+
