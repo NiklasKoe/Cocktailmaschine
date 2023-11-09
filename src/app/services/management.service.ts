@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Cocktail } from '../models/Cocktail';
 import { Ingredient } from '../models/Ingredient';
 import { IngredientMap } from '../models/IngredientMap';
+import * as globals from '../globals'
 
 @Injectable({
   providedIn: 'root'
@@ -14,32 +15,32 @@ export class ManagementService {
   }
 
   public getCocktails() {
-    return this.http.get<Cocktail[]>("http://10.106.110.19:8000/cocktails")
+    return this.http.get<Cocktail[]>(globals.apiUrl + "/cocktails")
   }
 
   public addCocktail(cocktail: Cocktail) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
-    return this.http.post<Cocktail>('http://10.106.110.19:8000/cocktail', cocktail, { headers })
+    return this.http.post<Cocktail>(globals.apiUrl + '/cocktail', cocktail, { headers })
   }
 
-  public deleteCocktail(cocktailname: string) {
+  public deleteCocktail(cocktail: Cocktail) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
-    return this.http.post<Cocktail>('http://10.106.110.19:8000/manage/cocktail/delete', cocktailname, { headers })
+    return this.http.delete<Cocktail>(globals.apiUrl + `/cocktail?name=${cocktail.name}`)
   }
 
 
   public getIngredients() {
-    return this.http.get<IngredientMap[]>('http://10.106.110.19:8000/ingredients')
+    return this.http.get<IngredientMap[]>(globals.apiUrl + '/ingredients')
   }
 
   public addIngredient(name: IngredientMap) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
-    return this.http.post<string>('http://10.106.110.19:8000/manage/ingredient/add', name, { headers })
+    return this.http.post<string>(globals.apiUrl + '/ingredient', name, { headers })
   }
 
-  public deleteIngredient(name: string) {
+  public deleteIngredient(ingredient: IngredientMap) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
-    return this.http.post<string>('http://10.106.110.19:8000/manage/ingredient/delete', name, { headers })
+    return this.http.delete<string>(globals.apiUrl + `/ingredient?name=${ingredient.name}`,)
   }
 
 }

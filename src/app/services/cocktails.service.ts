@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Cocktail } from '../models/Cocktail';
 import { HttpClient } from '@angular/common/http';
+import * as globals from '../globals'
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,17 @@ export class CocktailsService {
   constructor(private http: HttpClient) { }
 
   public getCocktails() {
-    return this.http.get<Cocktail[]>("http://10.106.110.19:8000/cocktails");
+    return this.http.get<Cocktail[]>(globals.apiUrl + "/cocktails");
   }
 
   public makeCocktail(cocktail: Cocktail) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
     console.log(cocktail.name);
-    return this.http.post<string>("http://10.106.110.19:8000/start", cocktail, { headers } )
+    return this.http.post<string>(globals.apiUrl + "/start", cocktail, { headers } )
   }
 
   public cleanPumps() {
-    return this.http.post<boolean>("http://10.106.110.19:8000/configuration/clean_pumps", true)
+    return this.http.post<boolean>(globals.apiUrl + "/configuration/clean_pumps", true)
   }
 
 

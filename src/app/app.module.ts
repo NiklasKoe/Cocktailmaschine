@@ -13,7 +13,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgxBootstrapMultiselectModule } from 'ngx-bootstrap-multiselect';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -26,12 +28,20 @@ import { NgxBootstrapMultiselectModule } from 'ngx-bootstrap-multiselect';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+
     HttpClientModule,
-    NgxBootstrapMultiselectModule,
+    NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     FontAwesomeModule,
     NgxSpinnerModule.forRoot({type: 'ball-scale-multiple'}),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
+    }),
   ],
   providers: [
     ListToString
