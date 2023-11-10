@@ -3,21 +3,26 @@
 </div>
 
 <!-- add Cocktail -->
+
+<h1>Cocktails</h1>
 <div class="box">
         <div class="mb-3">
             <label for="cocktailName" class="form-label">Name</label>
             <input type="text" class="form-control" id="cocktailName" [(ngModel)]="tempName" (change)="changeName($event)">
         </div>
-        <div class="mb-3">  
-            <!--  -->
+        <div class="mb-3 cocktailContainer">  
             <ng-container
-            *ngFor="let ingredient of ingredients">
-                <label for="">{{ingredient.name}}</label>
-                <input type="checkbox" (change)="addOrRemoveIngredient(ingredient)">
-                <input *ngIf="cockTailContainsIngredient(ingredient)" type="number" [(ngModel)]="tempAmount" (change)="changeAmount(ingredient, $event)">
+            *ngFor="let ingredient of ingredients" class="cocktailItem">
+            <!-- <div class="cont">  -->
+                <label class="item">
+                    <input type="checkbox" (change)="addOrRemoveIngredient(ingredient)"> 
+                    {{ingredient.name}}
+                    <input *ngIf="cockTailContainsIngredient(ingredient)" type="number" [(ngModel)]="tempAmount" (change)="changeAmount(ingredient, $event)">
+                </label>      
+            <!-- </div> -->
             </ng-container>
             
-            <pre>{{cocktailToAdd | json}}</pre>
+            <!-- <pre>{{cocktailToAdd | json}}</pre> -->
             <!-- <ng-multiselect-dropdown
                 [placeholder]="'custom placeholder'"
                 [settings]="dropdownSettings"
@@ -30,9 +35,8 @@
         </div>
         <button type="submit" class="btn btn-primary" (click)="addCocktail()">Hinzufügen</button>
 </div>
-
 <!-- Cocktailtable -->
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped my-table">
     <colgroup>
         <col style="width: 30%">
         <col>
@@ -50,10 +54,10 @@
 
         <tr *ngFor="let cocktail of cocktails">
             <td>{{cocktail.name}}</td>
-            <td>
-        <tr *ngFor="let ingredient of cocktail.ingredients">
-            <td>{{ingredient.name}}</td>
-            <td>{{ingredient.amount}}</td>
+            <td class="cocktailContainer">
+        <tr *ngFor="let ingredient of cocktail.ingredients" class="cocktailItem">
+            <td style="margin: 10px;">{{ingredient.name}}</td>
+            <td > - {{ingredient.amount}}ml</td>
         </tr>
         <td>
             <button class="btn" (click)="deleteCocktail(cocktail)">
@@ -64,7 +68,10 @@
         </tr>
     </tbody>
 </table>
+<br>
+<br>
 <!-- Add Ingredient -->
+<h1>Zutaten</h1>
 <div class="box">
         <div class="mb-3">
             <label for="ingredientName" class="form-label">Zutat</label>
@@ -91,7 +98,7 @@
             <th>Zutat</th>
             <th>Füllstand</th>
             <th>Pumpe</th>
-            <th><fa-icon [icon]="faTrashCan"></fa-icon></th>
+            <th>Löschen</th>
         </tr>
     </thead>
     <tbody>
@@ -109,7 +116,7 @@
     </tbody>
 </table>
 
-<pre>{{ingredientToAdd | json}}</pre>
+<!-- <pre>{{ingredientToAdd | json}}</pre> -->
 
 <ng-container>
 

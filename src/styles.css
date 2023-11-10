@@ -34,7 +34,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border: 1px solid black;
     border-radius: 15px;
     width: 40%;
-    margin-left: 3rem
+    margin-left: 3rem;
 }
 
 .btn-routing {
@@ -43,4 +43,27 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .my-table {
     margin: 0px 50px;
+    min-width: 50%;
+    max-width: 90%;
 }
+
+.cocktailContainer{
+display: grid;
+grid-template-columns: 200px 200px 200px;
+padding: 10px;
+}
+
+.cocktailItem{
+    text-align: left;
+}
+
+/* .ingredientCheckbox{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.ingredientCheckbox>* {
+    flex: 1 1 10px;
+} */
+
