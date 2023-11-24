@@ -38,6 +38,11 @@ export class ManagementService {
     return this.http.post<string>(globals.apiUrl + '/ingredient', name, { headers })
   }
 
+  public updateIngredient(ingredient: IngredientMap){
+    let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
+    return this.http.post<string>(globals.apiUrl + '/ingredient', ingredient, { headers })
+  }
+
   public deleteIngredient(ingredient: IngredientMap) {
     let headers = {'Content-Type': 'application/json', 'charset': 'utf-8'}
     return this.http.delete<string>(globals.apiUrl + `/ingredient?name=${ingredient.name}`,)

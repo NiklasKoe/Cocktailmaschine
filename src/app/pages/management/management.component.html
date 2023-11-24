@@ -7,7 +7,7 @@
 <h1>Cocktails</h1>
 <div class="box">
         <div class="mb-3">
-            <label for="cocktailName" class="form-label">Name</label>
+            <label for="cocktailName" class="form-label">Name*</label>
             <input type="text" class="form-control" id="cocktailName" [(ngModel)]="tempName" (change)="changeName($event)">
         </div>
         <div class="mb-3 cocktailContainer">  
@@ -17,7 +17,7 @@
                 <label class="item">
                     <input type="checkbox" (change)="addOrRemoveIngredient(ingredient)"> 
                     {{ingredient.name}}
-                    <input *ngIf="cockTailContainsIngredient(ingredient)" type="number" [(ngModel)]="tempAmount" (change)="changeAmount(ingredient, $event)">
+                    <input *ngIf="cockTailContainsIngredient(ingredient)" type="number" class="form-control" [value]="tempAmount" [(ngModel)]="tempAmount" (change)="tempAmount = $event;changeAmount(ingredient, $event)">
                 </label>      
             <!-- </div> -->
             </ng-container>
@@ -54,8 +54,8 @@
 
         <tr *ngFor="let cocktail of cocktails">
             <td>{{cocktail.name}}</td>
-            <td class="cocktailContainer">
-        <tr *ngFor="let ingredient of cocktail.ingredients" class="cocktailItem">
+            <td class="cocktailTableContainer">
+        <tr *ngFor="let ingredient of cocktail.ingredients" class="cocktailTableItem">
             <td style="margin: 10px;">{{ingredient.name}}</td>
             <td > - {{ingredient.amount}}ml</td>
         </tr>
@@ -66,6 +66,7 @@
             </button>
         </td>
         </tr>
+        <!-- <tr *ngIf="!cocktails">Keine Cocktails verfügbar - bitte hinzufügen!</tr> -->
     </tbody>
 </table>
 <br>
@@ -74,7 +75,7 @@
 <h1>Zutaten</h1>
 <div class="box">
         <div class="mb-3">
-            <label for="ingredientName" class="form-label">Zutat</label>
+            <label for="ingredientName" class="form-label">Zutat*</label>
             <input type="text" class="form-control" id="ingredientName" [(ngModel)]="ingredientToAdd.name" (ngModelChange)="ingredientToAdd.name = $event">
         </div>
         <div class="mb-3">
@@ -92,11 +93,14 @@
         <col>
         <col style="width: 10%">
     </colgroup>
-    <!--  -->
     <thead>
         <tr>
             <th>Zutat</th>
-            <th>Füllstand</th>
+            <th>Füllstand 
+                <button class="btn" (click)="editFillLevel()"> 
+                    <fa-icon [icon]="faPencil"></fa-icon>
+                </button>
+            </th>
             <th>Pumpe</th>
             <th>Löschen</th>
         </tr>
@@ -105,7 +109,15 @@
 
         <tr *ngFor="let ingredient of ingredients">
             <td>{{ingredient.name}}</td>
-            <td>{{ingredient.fillLevel}}</td>
+            <td [contentEditable]="editableFillLevel">
+                <input *ngIf="editableFillLevel" type="number" value="{{ingredient.fillLevel}}" [(ngModel)]="tempFillLevel" (change)="changeFillLevel(ingredient,$event)">
+            <div *ngIf="!editableFillLevel">
+                {{ingredient.fillLevel}}
+            </div> 
+            <button *ngIf="editableFillLevel" class="btn" type="submit" (click)="updateFillLevel(ingredientToUpdate)"> 
+                    <fa-icon [icon]="faFloppyDisk"></fa-icon>
+                </button>
+            </td>
             <td>{{ingredient.pump}}</td>
             <td>
                 <button class="btn" (click)="deleteIngredient(ingredient)">
@@ -113,6 +125,7 @@
                 </button>
             </td>
         </tr>
+        <!-- <tr *ngIf="!ingredients">Keine Zutaten verfügbar - bitte hinzufügen!</tr> -->
     </tbody>
 </table>
 
@@ -121,3 +134,4 @@
 <ng-container>
 
 </ng-container>
+<br>

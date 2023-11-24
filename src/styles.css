@@ -48,14 +48,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .cocktailContainer{
+    display: grid;
+    grid-template-columns: 200px 200px;
+    }
+    
+ .cocktailItem{
+        text-align: left;    
+    }
+
+.cocktailTableContainer{
 display: grid;
-grid-template-columns: 200px 200px 200px;
-padding: 10px;
+grid-template-columns: 200px 200px;
+grid-template-rows: 40px;
 }
 
-.cocktailItem{
+.cocktailTableItem{
     text-align: left;
 }
+
 
 /* .ingredientCheckbox{
     display: flex;

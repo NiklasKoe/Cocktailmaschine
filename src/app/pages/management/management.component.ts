@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { catchError, firstValueFrom, tap, throwError } from 'rxjs';
 import { Cocktail } from 'src/app/models/Cocktail';
 
@@ -7,8 +7,11 @@ import { ListToString } from 'src/app/pipes';
 import { IngredientMap } from 'src/app/models/IngredientMap';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { Ingredient } from 'src/app/models/Ingredient';
 
 
 
@@ -20,10 +23,14 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 export class ManagementComponent implements OnInit {
 
   faTrashCan = faTrashCan;
+  faPencil = faPencil;
+  faFloppyDisk = faFloppyDisk;
 
   dropdownList: any = [];
   selectedItems: any = [];
   dropdownSettings: IDropdownSettings = {};
+
+  editableFillLevel: boolean = false;
 
   constructor(
     private managementService: ManagementService,
@@ -37,7 +44,9 @@ export class ManagementComponent implements OnInit {
   public displayAddIngredientForm: boolean = false;
   public displayAddCocktailForm: boolean = false;
   public ingredientToAdd: IngredientMap = { name: '', fillLevel: 0, pump: 0 }
+  public ingredientToUpdate: IngredientMap = { name: '', fillLevel: 0, pump: 0 }
   public cocktailToAdd: Cocktail = { name: '', ingredients: [] }
+  // public ingredientAmount : number = 0;
 
   async ngOnInit() {
 
@@ -87,6 +96,7 @@ export class ManagementComponent implements OnInit {
   }
 
   addOrRemoveIngredient(ingredient: IngredientMap) {
+    console.log(this.cocktailToAdd.ingredients);
     //
     if (this.cocktailToAdd.ingredients.map(x => x.name).includes(ingredient.name)) {
       // Remove if included
@@ -95,8 +105,7 @@ export class ManagementComponent implements OnInit {
         this.cocktailToAdd.ingredients.splice(indexToRemove, 1);
       }
     } else {
-      this.cocktailToAdd.ingredients.push({ name: ingredient.name, amount: 0 })
-    }
+      this.cocktailToAdd.ingredients.push({ name: ingredient.name, amount: 0})}
   }
 
   cockTailContainsIngredient(ingredient: IngredientMap) {
@@ -105,21 +114,43 @@ export class ManagementComponent implements OnInit {
 
   tempName: string = '';
   changeName(val: any) {
+    if(this.tempName !== ''){
     this.cocktailToAdd.name = this.tempName;
-
+    }
   }
 
-  tempAmount: number = 0;
+  tempAmount: any = "";
   changeAmount(ingredient: IngredientMap, val: any) {
-    this.cocktailToAdd.ingredients.find(x => x.name == ingredient.name)!.amount = this.tempAmount;
+   console.log(this.cocktailToAdd.ingredients);
+   console.log(val);
+   this.cocktailToAdd.ingredients.find(x => x.name == ingredient.name)!.amount = this.tempAmount;
+  }
+
+  tempFillLevel: number = this.ingredientToUpdate.fillLevel;
+  changeFillLevel(ingredient:IngredientMap, val:any){
+  this.ingredientToUpdate.fillLevel = this.tempFillLevel;
+  this.updateIngredients;
   }
 
 
   public async addCocktail() {
     this.tempAmount = 0;
     this.tempName = '';
-    let result = await firstValueFrom(this.managementService.addCocktail(this.cocktailToAdd));
-    this.updateCocktails();
+
+    if(this.cocktailToAdd.name !== '' && this.cocktailToAdd.ingredients.length !== 0){
+      let result = await firstValueFrom(this.managementService.addCocktail(this.cocktailToAdd));
+      this.updateCocktails();
+      this.toastr.success("Cocktail erfolgreich hinzugefügt");
+    } 
+
+    if(this.cocktailToAdd.name === ''){
+      this.toastr.error("Bitte einen Cocktailnamen angeben!");
+    }
+
+    if(this.cocktailToAdd.ingredients.length === 0){
+      this.toastr.error("Bitte Zutaten hinzufügen!");
+    }
+
   }
 
   public async deleteCocktail(cocktail: Cocktail) {
@@ -130,15 +161,20 @@ export class ManagementComponent implements OnInit {
 
 
   public async addIngredient(ingredient: IngredientMap) {
+    if(this.ingredientToAdd.name !== ''){
     let result = await firstValueFrom(this.managementService.addIngredient(this.ingredientToAdd));
-    //
     if(result == null) {
       this.toastr.error("Die Pumpe ist bereits belegt");
     } else {
       this.toastr.success("Zutat erfolgreich hinzugefügt");
+    }}
+     else {
+      this.toastr.error("Bitte einen Zutatennamen angeben!");
     }
+    //
+   
 
-
+  
     /**.subscribe({
         next(num) { console.log("bla",num); },
         error(err) { console.log(err) },
@@ -150,6 +186,16 @@ export class ManagementComponent implements OnInit {
 
     // result.unsubscribe();
     this.updateIngredients();
+  }
+
+  public async editFillLevel(){
+      this.editableFillLevel = true;
+  }
+
+  public async updateFillLevel(ingredient: IngredientMap){
+    console.log(ingredient);
+    this.editableFillLevel = false;
+    let result = await firstValueFrom(this.managementService.updateIngredient(this.ingredientToUpdate));
   }
 
   public async deleteIngredient(ingredient: IngredientMap) {
