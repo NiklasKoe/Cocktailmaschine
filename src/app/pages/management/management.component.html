@@ -6,24 +6,36 @@
 
 <h1>Cocktails</h1>
 <div class="box">
-        <div class="mb-3">
-            <label for="cocktailName" class="form-label">Name*</label>
-            <input type="text" class="form-control" id="cocktailName" [(ngModel)]="tempName" (change)="changeName($event)">
+    <div class="mb-3">
+        <label for="cocktailName" class="form-label">Name*</label>
+        <input type="text" class="form-control" id="cocktailName" [(ngModel)]="tempName" (change)="changeName($event)">
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <label *ngFor="let ingredient of ingredients" class="w-100 cocktailItem">
+                <input type="checkbox" (change)="addOrRemoveIngredient(ingredient)">
+                {{ingredient.name}}
+            </label>
         </div>
-        <div class="mb-3 cocktailContainer">  
-            <ng-container
-            *ngFor="let ingredient of ingredients" class="cocktailItem">
-            <!-- <div class="cont">  -->
-                <label class="item">
-                    <input type="checkbox" (change)="addOrRemoveIngredient(ingredient)"> 
-                    {{ingredient.name}}
-                    <input *ngIf="cockTailContainsIngredient(ingredient)" type="number" class="form-control" [value]="tempAmount" [(ngModel)]="tempAmount" (change)="tempAmount = $event;changeAmount(ingredient, $event)">
-                </label>      
-            <!-- </div> -->
-            </ng-container>
-            
-            <!-- <pre>{{cocktailToAdd | json}}</pre> -->
-            <!-- <ng-multiselect-dropdown
+
+        <div class="col-6">
+            <div class="row" *ngFor="let ing of cocktailToAdd.ingredients">
+                <div class="col-6 text-end " style="height: 38px">
+                    <span>{{ing.name}}</span>
+                </div>
+                <div class="col-6" style="height: 38px">
+                    <input type="number" class="form-control" [(ngModel)]="ing.amount">
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="cont">  -->
+        <!-- </div> -->
+
+
+        <!-- <pre>{{cocktailToAdd | json}}</pre> -->
+        <!-- <ng-multiselect-dropdown
                 [placeholder]="'custom placeholder'"
                 [settings]="dropdownSettings"
                 [data]="dropdownList"
@@ -32,8 +44,8 @@
                 (onSelectAll)="onSelectAll($event)"
                 >
             </ng-multiselect-dropdown> -->
-        </div>
-        <button type="submit" class="btn btn-primary" (click)="addCocktail()">Hinzufügen</button>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="addCocktail()">Hinzufügen</button>
 </div>
 <!-- Cocktailtable -->
 <table class="table table-bordered table-striped my-table">
@@ -57,7 +69,7 @@
             <td class="cocktailTableContainer">
         <tr *ngFor="let ingredient of cocktail.ingredients" class="cocktailTableItem">
             <td style="margin: 10px;">{{ingredient.name}}</td>
-            <td > - {{ingredient.amount}}ml</td>
+            <td> - {{ingredient.amount}}ml</td>
         </tr>
         <td>
             <button class="btn" (click)="deleteCocktail(cocktail)">
@@ -74,17 +86,20 @@
 <!-- Add Ingredient -->
 <h1>Zutaten</h1>
 <div class="box">
-        <div class="mb-3">
-            <label for="ingredientName" class="form-label">Zutat*</label>
-            <input type="text" class="form-control" id="ingredientName" [(ngModel)]="ingredientToAdd.name" (ngModelChange)="ingredientToAdd.name = $event">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Pumpennummer</label>
-            <input type="number" class="form-control" id="exampleInputPassword1" [(ngModel)]="ingredientToAdd.pump" (ngModelChange)="ingredientToAdd.pump = $event">
-        </div>
-        <button type="submit" class="btn btn-primary" (click)="addIngredient(ingredientToAdd)">Hinzufügen</button>
+    <div class="mb-3">
+        <label for="ingredientName" class="form-label">Zutat*</label>
+        <input type="text" class="form-control" id="ingredientName" [(ngModel)]="ingredientToAdd.name"
+            (ngModelChange)="ingredientToAdd.name = $event">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Pumpennummer</label>
+        <input type="number" class="form-control" id="exampleInputPassword1" [(ngModel)]="ingredientToAdd.pump"
+            (ngModelChange)="ingredientToAdd.pump = $event">
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="addIngredient(ingredientToAdd)">Hinzufügen</button>
 </div>
 
+<pre>{{ingredients|json}}</pre>
 <!-- Ingredienttable -->
 <table class="table table-bordered table-striped my-table">
     <colgroup>
@@ -96,9 +111,12 @@
     <thead>
         <tr>
             <th>Zutat</th>
-            <th>Füllstand 
-                <button class="btn" (click)="editFillLevel()"> 
+            <th>Füllstand
+                <button class="btn" *ngIf="!editableFillLevel" (click)="editFillLevel()">
                     <fa-icon [icon]="faPencil"></fa-icon>
+                </button>
+                <button class="btn" *ngIf="editableFillLevel" (click)="saveFillLevel()">
+                    Save
                 </button>
             </th>
             <th>Pumpe</th>
@@ -110,13 +128,15 @@
         <tr *ngFor="let ingredient of ingredients">
             <td>{{ingredient.name}}</td>
             <td [contentEditable]="editableFillLevel">
-                <input *ngIf="editableFillLevel" type="number" value="{{ingredient.fillLevel}}" [(ngModel)]="tempFillLevel" (change)="changeFillLevel(ingredient,$event)">
-            <div *ngIf="!editableFillLevel">
-                {{ingredient.fillLevel}}
-            </div> 
-            <button *ngIf="editableFillLevel" class="btn" type="submit" (click)="updateFillLevel(ingredientToUpdate)"> 
+                <input *ngIf="editableFillLevel" type="number"
+                    [(ngModel)]="ingredient.fillLevel">
+                <div *ngIf="!editableFillLevel">
+                    {{ingredient.fillLevel}}
+                </div>
+                <!-- <button *ngIf="editableFillLevel" class="btn" type="submit"
+                    (click)="updateFillLevel(ingredientToUpdate)">
                     <fa-icon [icon]="faFloppyDisk"></fa-icon>
-                </button>
+                </button> -->
             </td>
             <td>{{ingredient.pump}}</td>
             <td>

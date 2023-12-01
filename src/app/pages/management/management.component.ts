@@ -141,6 +141,8 @@ export class ManagementComponent implements OnInit {
       let result = await firstValueFrom(this.managementService.addCocktail(this.cocktailToAdd));
       this.updateCocktails();
       this.toastr.success("Cocktail erfolgreich hinzugefügt");
+      this.cocktailToAdd = new Cocktail();
+
     } 
 
     if(this.cocktailToAdd.name === ''){
@@ -190,6 +192,16 @@ export class ManagementComponent implements OnInit {
 
   public async editFillLevel(){
       this.editableFillLevel = true;
+  }
+
+  saveFillLevel() {
+    this.ingredients.forEach(async x => {
+      let result = await firstValueFrom(this.managementService.updateIngredient(x));
+      //
+      this.toastr.error(result);
+      //
+    });
+    this.editableFillLevel = false;
   }
 
   public async updateFillLevel(ingredient: IngredientMap){
